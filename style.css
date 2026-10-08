@@ -411,3 +411,10 @@ figcaption { font-size: 12.5px; }
   letter-spacing: 0;
   white-space: nowrap;
 }
+
+/* home page: body text about 2pt larger */
+.home { font-size: 17px; }
+.home .when, .home .ko, .home .where { font-size: 16px; }
+.home .intro .role { font-size: 1.1rem; }
+.home figcaption { font-size: 14px; }
+.home .ext { font-size: 14.5px; }
