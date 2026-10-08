@@ -346,3 +346,52 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 }
 .portrait figcaption { margin-top: 14px; }
 @media (min-width: 820px) { .portrait { width: 360px; } }
+
+/* ---- revision: tighter leading, smaller home name ---- */
+body { line-height: 1.55; }
+.intro h1 { font-size: clamp(2rem, 4.2vw, 2.8rem); }
+.intro .role { margin: 4px 0 20px; }
+.intro p { margin: 0 0 12px; }
+.interests { margin-top: 18px; }
+.interests li { padding: 8px 0 8px 22px; }
+.interests li::before { top: .95em; }
+.section { padding: 28px 0; }
+.entry { padding: 9px 0; }
+.ko, .where { margin-top: 0; }
+.prose p { margin: 0 0 10px; }
+.page-title { margin: 16px 0 6px; }
+.page-lede { margin-bottom: 24px; }
+.book figcaption { line-height: 1.4; }
+.site-footer .inner { line-height: 1.5; }
+
+.class-photo { margin: 12px 0 4px; max-width: 280px; }
+.class-photo img { display: block; width: 100%; height: auto; border-radius: 3px; }
+
+.review-link { margin: 0 0 32px; }
+.button {
+  display: inline-block;
+  padding: 9px 18px;
+  background: var(--ink);
+  color: var(--sheet);
+  text-decoration: none;
+  border-radius: 999px;
+  font-size: .95rem;
+}
+.button:hover { background: var(--indigo); color: var(--sheet); }
+
+/* ---- match type scale of the book club review page ---- */
+body { font-size: 14.5px; line-height: 1.55; }
+.site-nav { font-size: 13.5px; }
+.brand { font-size: 1.05rem; }
+.intro h1 { font-size: clamp(1.9rem, 3.6vw, 2.5rem); }
+.intro .role { font-size: 1rem; }
+.page-title { font-size: clamp(1.9rem, 4.5vw, 2.9rem); }
+.section > h2 { font-size: 1.12rem; }
+.when { font-size: 13.5px; }
+.ko, .where { font-size: 13.5px; }
+.site-footer .inner { font-size: 12.5px; }
+.filter button { font-size: 13px; padding: 5px 12px; }
+.button { font-size: 13.5px; }
+.book figcaption { font-size: 13px; }
+figcaption { font-size: 12.5px; }
+@media (min-width: 600px) { .entry { grid-template-columns: 11rem 1fr; } }
