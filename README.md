@@ -17,7 +17,7 @@
 
 구글 사이트에 있던 사진과 책 표지가 모두 `images/` 폴더에 들어 있어서, 구글 사이트를 지워도 그대로 보입니다. 사진을 바꾸려면 같은 이름의 파일로 덮어쓰면 됩니다.
 
-- `images/aas2026.jpg` : 홈 화면 사진
+- `images/eaf2026.jpg` : 홈 화면 사진 (EAF Meets SKKU, 2026년 9월)
 - `images/class-2025.jpg` : Teaching 페이지 수업 사진
 - `images/books/` : 북클럽 책 표지 8장
 
