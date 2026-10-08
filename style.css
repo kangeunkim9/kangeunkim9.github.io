@@ -418,3 +418,10 @@ figcaption { font-size: 12.5px; }
 .home .intro .role { font-size: 1.1rem; }
 .home figcaption { font-size: 14px; }
 .home .ext { font-size: 14.5px; }
+
+/* home page: about 1pt larger than other pages (revised) */
+.home { font-size: 16px; }
+.home .when, .home .ko, .home .where { font-size: 15px; }
+.home .intro .role { font-size: 1.05rem; }
+.home figcaption { font-size: 13.5px; }
+.home .ext { font-size: 13.5px; }
