@@ -425,3 +425,13 @@ figcaption { font-size: 12.5px; }
 .home .intro .role { font-size: 1.05rem; }
 .home figcaption { font-size: 13.5px; }
 .home .ext { font-size: 13.5px; }
+
+/* interests bullet: small indigo dot instead of red diamond */
+.interests li { padding-left: 20px; }
+.interests li::before {
+  width: 6px; height: 6px;
+  left: 4px; top: .72em;
+  background: var(--indigo);
+  border-radius: 50%;
+  transform: none;
+}
