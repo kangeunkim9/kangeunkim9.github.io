@@ -395,3 +395,8 @@ body { font-size: 14.5px; line-height: 1.55; }
 .book figcaption { font-size: 13px; }
 figcaption { font-size: 12.5px; }
 @media (min-width: 600px) { .entry { grid-template-columns: 11rem 1fr; } }
+
+/* interests list without rules */
+.interests { border-top: 0; }
+.interests li { border-bottom: 0; padding: 3px 0 3px 22px; }
+.interests li::before { top: .7em; }
