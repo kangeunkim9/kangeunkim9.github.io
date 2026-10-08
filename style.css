@@ -1,0 +1,348 @@
+/* Kang-eun Kim — palette drawn from celadon paper, ink, indigo dye and seal paste */
+:root {
+  --paper: #eef1ec;
+  --sheet: #f9faf6;
+  --ink: #22292d;
+  --muted: #5d666a;
+  --rule: #c6cfc7;
+  --indigo: #2b3f6b;
+  --indigo-soft: #dfe4ec;
+  --seal: #a8362a;
+  --max: 1040px;
+  --gutter: 9.5rem;
+  --serif: "Gowun Batang", "Noto Serif KR", Georgia, serif;
+  --sans: "IBM Plex Sans KR", -apple-system, "Apple SD Gothic Neo", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #161b1e;
+    --sheet: #1d2327;
+    --ink: #e2e5df;
+    --muted: #99a2a5;
+    --rule: #333c41;
+    --indigo: #a3b6de;
+    --indigo-soft: #26304a;
+    --seal: #cf6156;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+}
+a { color: var(--indigo); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+a:focus-visible { outline: 2px solid var(--seal); outline-offset: 2px; border-radius: 2px; }
+img { max-width: 100%; }
+
+/* ---------- header ---------- */
+.site-header .inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 22px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 28px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.mini-seal {
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  background: var(--seal);
+  color: var(--sheet);
+  font-family: var(--serif);
+  font-size: .8rem;
+  border-radius: 3px;
+}
+.site-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .93rem; }
+.site-nav a { color: var(--muted); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+.site-nav a:hover { color: var(--ink); }
+.site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--seal); }
+
+main {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 700; line-height: 1.3; }
+
+/* ---------- home hero: a ruled manuscript leaf ---------- */
+.hero {
+  display: grid;
+  gap: 40px;
+  align-items: start;
+  padding: 24px 0 56px;
+}
+@media (min-width: 820px) {
+  .hero { grid-template-columns: auto 1fr; gap: 64px; padding-top: 40px; }
+}
+.leaf {
+  --col: 3.4rem;
+  position: relative;
+  justify-self: start;
+  writing-mode: vertical-rl;
+  height: 360px;
+  padding: 26px 18px;
+  background-color: var(--sheet);
+  background-image: repeating-linear-gradient(to left,
+    transparent 0 calc(var(--col) - 1px),
+    var(--rule) calc(var(--col) - 1px) var(--col));
+  background-position: right 18px top 0;
+  border: 1px solid var(--ink);
+  outline: 4px solid var(--sheet);
+  box-shadow: 0 0 0 5px var(--ink);
+  margin: 6px;
+  font-family: var(--serif);
+}
+.leaf p {
+  margin: 0;
+  width: var(--col);
+  line-height: var(--col);
+  letter-spacing: .12em;
+}
+.leaf .han { font-size: 2.1rem; font-weight: 700; letter-spacing: .3em; }
+.leaf .hangul { font-size: 1.35rem; }
+.leaf .small { font-size: 1rem; color: var(--muted); }
+.seal {
+  position: absolute;
+  left: 16px;
+  bottom: 20px;
+  writing-mode: horizontal-tb;
+  width: 40px; height: 66px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: var(--seal);
+  color: var(--sheet);
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  transform: rotate(-3deg);
+  box-shadow: inset 0 0 0 3px var(--seal), inset 0 0 0 4px var(--sheet);
+}
+
+.intro h1 {
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  margin: 0;
+  letter-spacing: -.01em;
+}
+.intro .role {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--muted);
+  margin: 6px 0 28px;
+}
+.intro p { max-width: 62ch; }
+.interests {
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 0;
+  max-width: 62ch;
+  border-top: 1px solid var(--rule);
+}
+.interests li {
+  padding: 12px 0 12px 22px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+.interests li::before {
+  content: "";
+  position: absolute;
+  left: 2px; top: 1.15em;
+  width: 8px; height: 8px;
+  background: var(--seal);
+  transform: rotate(45deg);
+}
+.hero-photo { margin: 32px 0 0; max-width: 62ch; }
+.hero-photo img { display: block; width: 100%; border-radius: 3px; }
+figcaption { font-size: .85rem; color: var(--muted); margin-top: 8px; }
+
+/* ---------- sections with a left gutter ---------- */
+.section {
+  display: grid;
+  gap: 8px 32px;
+  padding: 40px 0;
+  border-top: 2px solid var(--ink);
+}
+@media (min-width: 820px) {
+  .section { grid-template-columns: var(--gutter) 1fr; }
+}
+.section > h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+.section > .body { min-width: 0; }
+
+.page-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 24px 0 8px;
+}
+.page-lede { color: var(--muted); max-width: 62ch; margin: 0 0 40px; font-size: 1.05rem; }
+
+/* entries */
+.entries { list-style: none; margin: 0; padding: 0; }
+.entry {
+  display: grid;
+  gap: 2px 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.entry:first-child { padding-top: 0; }
+.entry:last-child { border-bottom: 0; }
+@media (min-width: 600px) {
+  .entry { grid-template-columns: 8.5rem 1fr; }
+}
+.when {
+  font-family: var(--serif);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-size: .95rem;
+}
+.what { max-width: 70ch; }
+.title { font-weight: 500; }
+.ko { display: block; color: var(--muted); font-size: .93rem; margin-top: 2px; }
+.where { display: block; font-family: var(--serif); color: var(--indigo); font-size: .95rem; margin-top: 2px; }
+.ext { font-size: .85rem; margin-left: 4px; white-space: nowrap; }
+.tag {
+  display: inline-block;
+  min-width: 3.2em;
+  text-align: center;
+  font-size: .75rem;
+  line-height: 1.6;
+  padding: 0 7px;
+  margin-right: 8px;
+  border: 1px solid var(--seal);
+  color: var(--seal);
+  border-radius: 2px;
+  vertical-align: 2px;
+}
+
+/* year groups on the publications page */
+.year-group { display: contents; }
+
+/* filter */
+.filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 32px; }
+.filter button {
+  font: inherit;
+  font-size: .9rem;
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  background: var(--sheet);
+  color: var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.filter button[aria-pressed="true"] { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+.filter button:focus-visible { outline: 2px solid var(--seal); outline-offset: 2px; }
+.count { color: var(--muted); font-size: .85rem; margin-left: 4px; }
+
+/* ---------- book club ---------- */
+.callout {
+  background: var(--sheet);
+  border-left: 4px solid var(--seal);
+  padding: 18px 22px;
+  max-width: 62ch;
+}
+.prose p { max-width: 62ch; margin: 0 0 14px; }
+.prose h3 { font-size: 1rem; margin: 18px 0 4px; }
+
+.books {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 28px 22px;
+}
+.book { margin: 0; }
+.cover {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  background: var(--indigo);
+  border-radius: 2px 4px 4px 2px;
+  overflow: hidden;
+  box-shadow: inset 6px 0 0 rgba(0, 0, 0, .18);
+}
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* title slip (題簽) when no cover image */
+.cover .slip {
+  position: absolute;
+  top: 10%;
+  left: 14%;
+  width: 26%;
+  height: 62%;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  writing-mode: vertical-rl;
+  font-family: var(--serif);
+  font-size: .82rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
+  overflow: hidden;
+  letter-spacing: .08em;
+}
+.cover:has(img) .slip { display: none; }
+.book:nth-child(3n+2) .cover { background: #3f5d4f; }
+.book:nth-child(3n) .cover { background: #6b3f3a; }
+@media (prefers-color-scheme: dark) {
+  .cover { background: #2b3f6b; }
+}
+.book figcaption { font-size: .88rem; line-height: 1.5; color: var(--ink); }
+.book figcaption .by { color: var(--muted); }
+
+/* ---------- footer ---------- */
+.site-footer { border-top: 2px solid var(--ink); }
+.site-footer .inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 28px 16px 48px;
+  display: grid;
+  gap: 16px 32px;
+  font-size: .9rem;
+  color: var(--muted);
+}
+@media (min-width: 820px) { .site-footer .inner { grid-template-columns: var(--gutter) 1fr 1fr; } }
+.site-footer h2 { font-size: 1rem; margin: 0; color: var(--ink); }
+.site-footer p { margin: 0; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (min-width: 600px) { .entries.by-month .entry { grid-template-columns: 4rem 1fr; } }
+.tag.talk { border-color: var(--indigo); color: var(--indigo); }
+body { word-break: keep-all; overflow-wrap: anywhere; }
+
+/* home portrait, framed with a double rule like a woodblock page border */
+.portrait { margin: 6px; justify-self: start; max-width: 380px; }
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--ink);
+  padding: 5px;
+  background: var(--sheet);
+  box-shadow: 0 0 0 4px var(--sheet), 0 0 0 5px var(--ink);
+}
+.portrait figcaption { margin-top: 14px; }
+@media (min-width: 820px) { .portrait { width: 360px; } }
