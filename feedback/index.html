@@ -55,6 +55,9 @@ textarea{width:100%;min-height:84px;font:inherit;border:1px solid var(--line);bo
 .memo.on{border-color:#e8932a;box-shadow:0 0 0 2px rgba(232,147,42,.25)}
 .meta{display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--muted);margin-bottom:4px}
 .meta .who{font-weight:700;color:var(--ink)}
+.meta .who.t{color:#b4235a}
+.jo-pick{font:inherit;font-weight:700;font-size:16px;padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.me .fixed{font-weight:700;color:#b4235a}
 .meta .pg{margin-left:auto}
 .body{white-space:pre-wrap;word-break:break-word}
 .reply{border-top:1px dashed var(--line);margin-top:8px;padding-top:8px}
@@ -86,6 +89,8 @@ textarea{width:100%;min-height:84px;font:inherit;border:1px solid var(--line);bo
 // 메모판 서버(구글 Apps Script). 글과 메모는 선생님 구글 드라이브·시트에 있고, 이 페이지에는 들어 있지 않다.
 var API = 'https://script.google.com/macros/s/AKfycbxiQqjmqh9doHTm10U8lmav9YQGkOyWXpEgBxLV8HziRGPsfoEt0HdXGs5Tx48LrflnWw/exec';
 var GROUP_TOKEN = new URLSearchParams(location.search).get('g') || '';
+var TEACHER_KEY = new URLSearchParams(location.search).get('t') || '';
+var TEACHER_NICK = '사랑의하츄핑';
 </script>
 <script>
 (function(){
@@ -96,8 +101,8 @@ var mine = load('mine') || {};          // {id: secret}
 function load(k){ try{ return JSON.parse(localStorage.getItem('fb_'+k)); }catch(e){ return null; } }
 function save(k,v){ try{ localStorage.setItem('fb_'+k, JSON.stringify(v)); }catch(e){} }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-function get(q){ return fetch(API+'?'+new URLSearchParams(q).toString(), {redirect:'follow'}); }
-function post(b){ return fetch(API, {method:'POST', redirect:'follow', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(b)}); }
+function get(q){ if(TEACHER_KEY) q.t=TEACHER_KEY; return fetch(API+'?'+new URLSearchParams(q).toString(), {redirect:'follow'}); }
+function post(b){ if(TEACHER_KEY) b.t=TEACHER_KEY; return fetch(API, {method:'POST', redirect:'follow', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(b)}); }
 function call(req){
   return req.then(function(r){ if(!r.ok) throw new Error('서버에 연결하지 못했습니다. 잠시 뒤 다시 시도해 주세요.'); return r.json(); })
     .then(function(j){ if(!j.ok) throw new Error(j.error||'오류가 났습니다.'); return j.data; });
@@ -130,11 +135,22 @@ function metaOut(meta){ var ms=meta.ms+(meta._f?Date.now()-meta._f:0); return {m
 
 /* ---------- 시작 ---------- */
 function start(){
+  if(TEACHER_KEY){
+    return call(get({api:'groups'})).then(function(list){
+      S.groups=list; var last=load('t_group');
+      GROUP_TOKEN = (list.filter(function(x){return x.g===last;})[0] || list[0]).g;
+      loadGroup();
+    }).catch(function(e){ notice('들어갈 수 없습니다', e.message); });
+  }
   if(!GROUP_TOKEN){ return notice('조별 링크로 들어와 주세요.','선생님이 나눠 준 우리 조 링크를 열면 같은 조 친구들의 글을 볼 수 있습니다.'); }
+  loadGroup();
+}
+function loadGroup(){
+  S.loadSeq++; S.cur=null; S.counts={}; S.memos=[]; S.draft=null; S.active=null;
   call(get({api:'group', g:GROUP_TOKEN})).then(function(g){
-    S.jo=g.jo; S.essays=g.essays; S.open=g.open; S.from=g.from; S.until=g.until;
-    var saved = load('me_'+S.jo);
-    S.me = (saved && g.essays.some(function(e){return e.nick===saved;})) ? saved : '';
+    S.jo=g.jo; S.essays=g.essays; S.open=g.open; S.from=g.from; S.until=g.until; S.teacher=!!g.teacher;
+    if(S.teacher) S.me=TEACHER_NICK;
+    else { var saved = load('me_'+S.jo); S.me = (saved && g.essays.some(function(e){return e.nick===saved;})) ? saved : ''; }
     shell();
     var last = load('cur_'+S.jo);
     var first = g.essays.filter(function(e){return e.nick===last;})[0] || g.essays.filter(function(e){return e.nick!==S.me;})[0] || g.essays[0];
@@ -150,22 +166,29 @@ function periodText(){
 }
 
 function shell(){
+  var title = S.teacher
+    ? '<h1><select class="jo-pick" id="jo">'+S.groups.map(function(x){ return '<option value="'+esc(x.g)+'"'+(x.g===GROUP_TOKEN?' selected':'')+'>'+x.jo+'조</option>'; }).join('')+'</select> 상호 피드백</h1>'
+    : '<h1>'+S.jo+'조 상호 피드백</h1>';
+  var who = S.teacher ? '<span class="me">나는 <span class="fixed">'+esc(TEACHER_NICK)+'</span></span>' : null;
   var opts = '<option value="">닉네임 선택</option>' + S.essays.map(function(e){ return '<option'+(e.nick===S.me?' selected':'')+'>'+esc(e.nick)+'</option>'; }).join('');
   document.getElementById('app').innerHTML =
-    '<header><h1>'+S.jo+'조 상호 피드백</h1>'+
+    '<header>'+title+
     '<div class="tabs" id="tabs" role="tablist"></div>'+
-    '<label class="me">나는 <select id="me"'+(S.me?'':' class="need"')+'>'+opts+'</select></label></header>'+
+    (who || '<label class="me">나는 <select id="me"'+(S.me?'':' class="need"')+'>'+opts+'</select></label>')+'</header>'+
     '<main><section id="viewer"><div id="pages"></div><button id="addBtn" type="button">＋ 메모 달기</button></section>'+
     '<aside id="side"></aside></main>';
-  document.getElementById('me').addEventListener('change', function(){
+  var jo=document.getElementById('jo');
+  if(jo) jo.addEventListener('change', function(){ GROUP_TOKEN=this.value; save('t_group',GROUP_TOKEN); document.getElementById('pages').innerHTML='<div class="loading">불러오는 중…</div>'; loadGroup(); });
+  if(!S.teacher) document.getElementById('me').addEventListener('change', function(){
     S.me=this.value; save('me_'+S.jo,S.me); this.classList.toggle('need', !S.me);
     if(S.cur) openEssay(S.cur); else { renderTabs(); renderSide(); }
   });
   document.getElementById('addBtn').addEventListener('mousedown', function(e){ e.preventDefault(); });
   document.getElementById('addBtn').addEventListener('click', startDraftFromSelection);
-  document.addEventListener('selectionchange', onSel);
   document.getElementById('viewer').addEventListener('scroll', function(){ hideAdd(); });
   renderTabs();
+  if(S.wired) return; S.wired=true;
+  document.addEventListener('selectionchange', onSel);
   setInterval(function(){ if(S.cur && !document.hidden && !S.draft) refresh(); }, 30000);
   document.addEventListener('visibilitychange', function(){ if(!document.hidden && S.cur && !S.draft) refresh(); });
 }
@@ -378,7 +401,7 @@ function renderSide(){
     setTimeout(function(){ if(b.isConnected){ delete b.dataset.armed; b.textContent='삭제'; } },4000); }; });
 }
 function metaHtml(m, top){
-  return '<div class="meta"><span class="who">'+esc(m.author)+'</span><span>'+fmt(m.time)+'</span>'+
+  return '<div class="meta"><span class="who'+(m.author===TEACHER_NICK?' t':'')+'">'+esc(m.author)+'</span><span>'+fmt(m.time)+'</span>'+
     (mine[m.id] && S.open ?'<button class="del" data-id="'+esc(m.id)+'" type="button">삭제</button>':'')+
     (top && m.page?'<span class="pg">'+m.page+'쪽</span>':'')+'</div>';
 }
