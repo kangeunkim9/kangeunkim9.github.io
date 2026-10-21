@@ -150,15 +150,23 @@ document.addEventListener('keydown', function(e){
 }, true);
 
 /* ---------- 메모 칸 입력 기록 (붙여넣기 금지) ---------- */
+var ACTIVE = [];   // 작성 중인 메모들의 기록
+function goAway(){ var t=Date.now(); ACTIVE.forEach(function(m){ if(!m._a){ m.away++; m._a=t; } }); }
+function comeBack(){ var t=Date.now(); ACTIVE.forEach(function(m){ if(m._a){ m.awayMs+=t-m._a; m._a=0; } }); }
+window.addEventListener('blur', goAway);
+window.addEventListener('focus', comeBack);
+document.addEventListener('visibilitychange', function(){ if(document.hidden) goAway(); else comeBack(); });
 function track(ta, meta){
+  ta.addEventListener('focus', function(){ if(!meta.started){ meta.started=Date.now(); ACTIVE.push(meta); } });
   ta.addEventListener('paste', function(e){ e.preventDefault(); meta.pastes++; toast('붙여넣기는 할 수 없습니다. 직접 써 주세요.'); });
   ta.addEventListener('drop', function(e){ e.preventDefault(); meta.pastes++; toast('끌어다 놓기는 할 수 없습니다. 직접 써 주세요.'); });
   ta.addEventListener('keydown', function(){ meta.keys++; });
   ta.addEventListener('focus', function(){ meta._f=Date.now(); });
   ta.addEventListener('blur', function(){ if(meta._f){ meta.ms+=Date.now()-meta._f; meta._f=0; } });
 }
-function newMeta(){ return {ms:0, keys:0, pastes:0, _f:0}; }
-function metaOut(meta){ var ms=meta.ms+(meta._f?Date.now()-meta._f:0); return {ms:ms, keys:meta.keys, pastes:meta.pastes}; }
+function newMeta(){ return {ms:0, keys:0, pastes:0, _f:0, away:0, awayMs:0, _a:0, started:0}; }
+function metaOut(meta){ var ms=meta.ms+(meta._f?Date.now()-meta._f:0); comeBack(); ACTIVE=ACTIVE.filter(function(m){return m!==meta;});
+  return {ms:ms, keys:meta.keys, pastes:meta.pastes, away:meta.away, awayMs:meta.awayMs}; }
 
 /* ---------- 시작 ---------- */
 function start(){
