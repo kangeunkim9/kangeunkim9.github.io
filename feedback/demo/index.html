@@ -149,7 +149,7 @@ document.addEventListener('keydown', function(e){
   if(mod && k==='c' && !inField(e.target)){ e.preventDefault(); toast('글은 복사할 수 없습니다.'); }
 }, true);
 
-/* ---------- 메모 칸 입력 기록 (붙여넣기 금지) ---------- */
+/* ---------- 메모 칸 입력 기록 (붙여넣기 허용, 횟수만 기록) ---------- */
 var ACTIVE = [];   // 작성 중인 메모들의 기록
 function goAway(){ var t=Date.now(); ACTIVE.forEach(function(m){ if(!m._a){ m.away++; m._a=t; } }); }
 function comeBack(){ var t=Date.now(); ACTIVE.forEach(function(m){ if(m._a){ m.awayMs+=t-m._a; m._a=0; } }); }
@@ -158,8 +158,8 @@ window.addEventListener('focus', comeBack);
 document.addEventListener('visibilitychange', function(){ if(document.hidden) goAway(); else comeBack(); });
 function track(ta, meta){
   ta.addEventListener('focus', function(){ if(!meta.started){ meta.started=Date.now(); ACTIVE.push(meta); } });
-  ta.addEventListener('paste', function(e){ e.preventDefault(); meta.pastes++; toast('붙여넣기는 할 수 없습니다. 직접 써 주세요.'); });
-  ta.addEventListener('drop', function(e){ e.preventDefault(); meta.pastes++; toast('끌어다 놓기는 할 수 없습니다. 직접 써 주세요.'); });
+  ta.addEventListener('paste', function(){ meta.pastes++; });
+  ta.addEventListener('drop', function(){ meta.pastes++; });
   ta.addEventListener('keydown', function(){ meta.keys++; });
   ta.addEventListener('focus', function(){ meta._f=Date.now(); });
   ta.addEventListener('blur', function(){ if(meta._f){ meta.ms+=Date.now()-meta._f; meta._f=0; } });
@@ -417,11 +417,10 @@ function renderSide(){
   var h='<div class="side-head"><b>메모 '+tops.length+'개</b><button class="ghost" id="whole" type="button"'+(can?'':' disabled')+'>글 전체에 메모</button></div>';
   if(!S.me) h+='<div class="help">먼저 위쪽 <b>나는</b> 칸에서 내 닉네임을 골라 주세요. 메모마다 이 닉네임이 붙습니다.</div>';
   else if(!S.open) h+='<div class="help">지금은 메모를 쓸 수 있는 기간이 아닙니다. '+esc(periodText())+'</div>';
-  else if(!tops.length && !S.draft) h+='<div class="help">글에서 문장을 드래그하면 <b>＋ 메모 달기</b> 버튼이 나타납니다. 글 전체에 대한 의견은 오른쪽 위 버튼으로 남길 수 있어요. 메모는 직접 써 주세요(붙여넣기 불가).</div>';
+  else if(!tops.length && !S.draft) h+='<div class="help">글에서 문장을 드래그하면 <b>＋ 메모 달기</b> 버튼이 나타납니다. 글 전체에 대한 의견은 오른쪽 위 버튼으로 남길 수 있어요.</div>';
   if(S.draft){
     h+='<div class="composer">'+(S.draft.quote?'<p class="q">“'+esc(S.draft.quote)+'”</p>':'<p class="q">글 전체에 대한 메모</p>')+
        '<textarea placeholder="'+esc(S.me)+'(으)로 메모를 남깁니다">'+esc(S.draft.text)+'</textarea>'+
-       '<p class="rule">붙여넣기는 되지 않습니다. 직접 써 주세요.</p>'+
        '<div class="row"><button class="ghost" id="cancel" type="button">취소</button><button class="primary" id="post" type="button">저장</button></div></div>';
   }
   if(!tops.length && !S.draft && S.me && S.open) h+='<div class="empty">아직 메모가 없습니다.</div>';
