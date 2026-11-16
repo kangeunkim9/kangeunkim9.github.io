@@ -88,7 +88,10 @@ textarea{width:100%;min-height:84px;font:inherit;border:1px solid var(--line);bo
 <script>
 // 메모판 서버(구글 Apps Script). 글과 메모는 선생님 구글 드라이브·시트에 있고, 이 페이지에는 들어 있지 않다.
 var API = 'https://script.google.com/macros/s/AKfycbyCjOAo3ZGfb6Iz9y3vSzTtjn_Qghi-oddbcV5nXTdUCOr2mLMJRYb5GuKQsCvElsKBLA/exec';
-var GROUP_TOKEN = new URLSearchParams(location.search).get('g') || '';
+var GROUP_TOKEN = new URLSearchParams(location.search).get('g') || new URLSearchParams(location.hash.slice(1)).get('g') || '';
+// 주소 뒤의 ?g= 가 빠진 채로 다시 열어도 마지막으로 들어온 조로 들어가게 한다
+(function(){ var k=(location.pathname.indexOf('feedback2')>=0?'fb2_':'fb_')+'last_g';
+  try{ if(GROUP_TOKEN) localStorage.setItem(k, GROUP_TOKEN); else GROUP_TOKEN = localStorage.getItem(k) || ''; }catch(e){} })();
 var TEACHER_KEY = new URLSearchParams(location.search).get('t') || '';
 var TEACHER_NICK = '베라 사장';
 </script>
