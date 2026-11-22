@@ -618,3 +618,6 @@ figcaption { font-size: 12.5px; }
 /* two class photos side by side, same size */
 .class-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 580px; margin: 12px 0 4px; }
 .class-photos .class-photo { margin: 0; max-width: none; }
+
+/* first sub-heading lines up with the section title */
+.prose > :first-child { margin-top: 0; }
