@@ -439,3 +439,9 @@ figcaption { font-size: 12.5px; }
 /* landscape home photo */
 .portrait { max-width: 460px; }
 @media (min-width: 820px) { .portrait { width: 440px; } }
+
+/* six menu items: brand on its own line, menu below, on narrower desktops */
+.site-nav { gap: 4px 20px; }
+@media (max-width: 1180px) {
+  .site-header .inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
