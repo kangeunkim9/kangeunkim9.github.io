@@ -605,3 +605,6 @@ figcaption { font-size: 12.5px; }
 @media (prefers-color-scheme: dark) { .site-footer { background: #0e1013; } }
 .section { border-top-width: 1px; }
 .what { max-width: none; }
+
+/* book club text uses the full content width */
+.prose p, .callout { max-width: none; }
