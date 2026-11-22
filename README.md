@@ -6,7 +6,8 @@
 
 | 파일 | 내용 |
 |---|---|
-| `index.html` | Home (소개, 학력, 경력, 수상) |
+| `index.html` | 첫 화면 (메뉴 네 개: Kim Kang-eun, Korean Literature Book Club, Classical Novel World, Bangakbon Reader) |
+| `about.html` | Kim Kang-eun > Profile (소개, 학력, 경력, 수상) |
 | `publications.html` | Talks & Publications |
 | `teaching.html` | Teaching & Projects |
 | `book-club.html` | Korean Literature Book Club |

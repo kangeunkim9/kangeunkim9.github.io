@@ -440,8 +440,129 @@ figcaption { font-size: 12.5px; }
 .portrait { max-width: 460px; }
 @media (min-width: 820px) { .portrait { width: 440px; } }
 
-/* six menu items: brand on its own line, menu below, on narrower desktops */
-.site-nav { gap: 4px 20px; }
-@media (max-width: 1180px) {
-  .site-header .inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+/* ---------- header: home icon + four sections, sub-menu for Kim Kang-eun ---------- */
+.site-header .inner { justify-content: flex-start; align-items: center; gap: 8px 22px; padding-bottom: 14px; }
+.home-link {
+  display: grid; place-items: center;
+  width: 34px; height: 34px; margin-left: -7px;
+  color: var(--ink); border-radius: 50%;
+}
+.home-link:hover { background: var(--indigo-soft); }
+.site-nav { gap: 4px 24px; }
+.site-nav a[aria-current="page"] { font-weight: 500; }
+.sub-nav {
+  display: flex; flex-wrap: wrap; gap: 4px 20px;
+  max-width: var(--max); margin: 0 auto;
+  padding: 10px 16px 0;
+  border-top: 1px solid var(--rule);
+  font-size: 14px;
+}
+.sub-nav a { color: var(--muted); text-decoration: none; padding: 2px 0; }
+.sub-nav a:hover { color: var(--ink); }
+.sub-nav a[aria-current="page"] { color: var(--indigo); font-weight: 500; }
+
+/* ---------- main page (hub) ---------- */
+.landing { min-height: 100vh; display: flex; flex-direction: column; }
+.hub {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(40px, 9vh, 96px) 16px 64px;
+}
+.hub-head { margin-bottom: clamp(28px, 6vh, 56px); }
+.hub-head h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  line-height: 1.15;
+  margin: 0;
+}
+.hub-head .name-ko { font-size: .4em; }
+.hub-head p { margin: 10px 0 0; color: var(--muted); font-family: var(--serif); font-size: clamp(1rem, 2vw, 1.15rem); }
+
+.tiles {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 620px) { .tiles { grid-template-columns: repeat(2, 1fr); gap: 22px; } }
+@media (min-width: 1000px) { .tiles { grid-template-columns: repeat(4, 1fr); } }
+
+.tile {
+  display: flex; flex-direction: column; height: 100%;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  color: var(--ink);
+  text-decoration: none;
+}
+.tile:hover { border-color: var(--ink); }
+.tile:hover .tile-title { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.tile:focus-visible { outline: 2px solid var(--seal); outline-offset: 3px; }
+
+.tile-art {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+@media (min-width: 1000px) { .tile-art { aspect-ratio: 4 / 3; } }
+.art-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; display: block; }
+.art-books {
+  background: #2b3f6b;
+  display: flex; align-items: center; justify-content: center; gap: 6%;
+  padding: 0 8%;
+}
+.art-books img {
+  width: 27%; aspect-ratio: 2 / 3; object-fit: cover;
+  border-radius: 2px 3px 3px 2px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .28);
+}
+.art-books img:nth-child(2) { transform: translateY(-6%); }
+.art-world { background: #3f5d4f; color: #e9efe6; display: grid; place-items: center; }
+.art-world svg { width: 82%; height: 82%; }
+.art-reader {
+  background-color: #efe6d2;
+  background-image: repeating-linear-gradient(to left, transparent 0 calc(2.6rem - 1px), rgba(107, 63, 58, .28) calc(2.6rem - 1px) 2.6rem);
+  display: grid; place-items: center;
+}
+.leaf-glyph {
+  writing-mode: vertical-rl;
+  font-family: "Noto Serif KR", var(--serif);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+  letter-spacing: .25em;
+  color: #6b3f3a;
+}
+
+.tile-text { display: block; padding: 16px 18px 20px; }
+.tile-title { display: block; font-family: var(--serif); font-weight: 700; font-size: 1.2rem; line-height: 1.3; }
+.tile-desc { display: block; margin-top: 6px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+
+/* phones: picture beside the text, so all four fit with little scrolling */
+@media (max-width: 619px) {
+  .tile { flex-direction: row; align-items: stretch; }
+  .tile-art { flex: 0 0 34%; aspect-ratio: auto; min-height: 112px; }
+  .art-books { gap: 4%; padding: 0 5%; }
+  .art-books img:nth-child(3) { display: none; }
+  .art-books img { width: 42%; }
+  .leaf-glyph { font-size: 1.4rem; }
+  .tile-text { padding: 12px 14px 14px; }
+  .tile-title { font-size: 1.05rem; }
+  .tile-desc { font-size: 13.5px; }
+}
+@media (prefers-color-scheme: dark) {
+  .art-reader { background-color: #2a2522; }
+  .leaf-glyph { color: #d9a79f; }
+}
+.sub-nav {
+  border-top: 0;
+  background: linear-gradient(var(--rule), var(--rule)) no-repeat 16px 0 / calc(100% - 32px) 1px;
+}
+@media (max-width: 619px) {
+  .site-nav { font-size: 14px; gap: 2px 16px; }
+  .site-header .inner { flex-wrap: nowrap; align-items: flex-start; }
+  .home-link { flex: 0 0 34px; margin-top: -2px; }
 }
