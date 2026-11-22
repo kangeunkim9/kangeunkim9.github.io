@@ -566,3 +566,8 @@ figcaption { font-size: 12.5px; }
   .site-header .inner { flex-wrap: nowrap; align-items: flex-start; }
   .home-link { flex: 0 0 34px; margin-top: -2px; }
 }
+
+/* profile without a photo */
+.hero.no-photo { grid-template-columns: 1fr; padding-top: 24px; }
+.hero.no-photo .intro p, .hero.no-photo .interests { max-width: 70ch; }
+.tile-ko { display: block; font-family: var(--sans); font-weight: 400; font-size: 14px; color: var(--muted); margin-top: 2px; }
